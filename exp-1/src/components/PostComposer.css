@@ -1,0 +1,104 @@
+/* Main Container */
+.post-composer {
+    width: 600px;
+    margin: 30px auto;
+    padding: 25px;
+    background-color: #6174ff;
+    border: 1px solid #dcdcdc;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* Heading */
+.post-composer h1 {
+    text-align: center;
+    margin: 0 0 25px;
+    font-size: 2rem;
+    font-weight: 700;
+    color: #333;
+    line-height: 1.2;
+}
+
+/* Form Groups */
+.form-group {
+    margin-bottom: 18px;
+}
+
+/* Labels */
+.form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+/* Dropdown */
+select {
+    width: 100%;
+    padding: 10px;
+    font-size: 15px;
+    border: 1px solid #bdbdbd;
+    border-radius: 5px;
+    outline: none;
+}
+
+/* Text Area */
+textarea {
+    width: 100%;
+    padding: 12px;
+    font-size: 15px;
+    border: 1px solid #bdbdbd;
+    border-radius: 5px;
+    resize: vertical;
+    min-height: 180px;
+    box-sizing: border-box;
+    outline: none;
+}
+
+/* Selected Platform */
+.selected-platform {
+    margin-bottom: 15px;
+    color: #444;
+}
+
+/* Character Counter */
+.character-count {
+    margin-top: 10px;
+    font-size: 15px;
+    color: #555;
+}
+
+/* Success Message */
+.success-message {
+    color: green;
+    font-weight: bold;
+    margin: 12px 0;
+}
+
+/* Error Message */
+.error-message {
+    color: red;
+    font-weight: bold;
+    margin: 12px 0;
+}
+
+/* Save Button */
+.save-btn {
+    width: 100%;
+    padding: 12px;
+    background-color: #2563eb;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.25s;
+}
+
+.save-btn:hover:not(:disabled) {
+    background-color: #1d4ed8;
+}
+
+.save-btn:disabled {
+    background-color: #b0b0b0;
+    cursor: not-allowed;
+}

@@ -1,0 +1,67 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #ffffff;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.app {
+    width: 90%;
+    max-width: 900px;
+    margin: 30px auto;
+}
+
+.app-title {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #222;
+}
+
+.draft-section {
+    margin-top: 35px;
+}
+
+h2 {
+    margin-bottom: 20px;
+    color: #000000;
+}
+
+.no-drafts {
+    text-align: center;
+    color: #666;
+    font-style: italic;
+}
+
+.draft-card {
+    background: white;
+    padding: 18px;
+    margin-bottom: 18px;
+    border-radius: 8px;
+    border: 1px solid #d9d9d9;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.draft-card h3 {
+    margin-top: 0;
+    color: #000000;
+}
+
+.draft-card p {
+    color: #000000;
+    line-height: 1.5;
+}
+
+.delete-btn {
+    margin-top: 12px;
+    background-color: #dc2626;
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.25s;
+}
+
+.delete-btn:hover {
+    background-color: #b91c1c;
+}
