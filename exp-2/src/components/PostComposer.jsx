@@ -9,16 +9,16 @@ import {
     selectEditingPost,
 } from "../features/posts/postsSlice";
 
+import {
+    validatePost,
+    PLATFORM_LIMITS,
+} from "../utils/validation";
+
 import CharacterCounter from "./CharacterCounter";
 import Spinner from "./Spinner";
 
-const PLATFORM_LIMITS = {
-    Twitter: 280,
-    LinkedIn: 3000,
-    Instagram: 2200,
-};
-
 function PostComposer() {
+
     const dispatch = useDispatch();
 
     const loading = useSelector((state) => state.posts.loading);
@@ -34,8 +34,9 @@ function PostComposer() {
         }
     }, [editingPost]);
 
+    const validation = validatePost(content, platform);
+
     const maxLength = PLATFORM_LIMITS[platform];
-    const isOverLimit = content.length > maxLength;
 
     const resetForm = () => {
         setPlatform("Twitter");
@@ -43,29 +44,30 @@ function PostComposer() {
     };
 
     const handleSubmit = async () => {
-        if (!content.trim()) {
-            toast.error("Please enter some content.");
-            return;
-        }
 
-        if (isOverLimit) {
-            toast.error("Character limit exceeded.");
+        if (!validation.isValid) {
+            toast.error(validation.error);
             return;
         }
 
         if (editingPost) {
+
             dispatch(
                 updatePost({
                     id: editingPost.id,
-                    platform,
-                    content,
+                    changes: {
+                        platform,
+                        content,
+                    },
                 })
             );
 
             toast.success("Post updated successfully.");
 
             dispatch(cancelEditing());
+
             resetForm();
+
             return;
         }
 
@@ -74,6 +76,7 @@ function PostComposer() {
                 id: Date.now().toString(),
                 platform,
                 content,
+                createdAt: new Date().toISOString(),
             })
         );
 
@@ -118,12 +121,18 @@ function PostComposer() {
                 maxLength={maxLength}
             />
 
+            {!validation.isValid && (
+                <p className="error-message">
+                    {validation.error}
+                </p>
+            )}
+
             <div className="button-group">
 
                 <button
                     className="save-btn"
                     onClick={handleSubmit}
-                    disabled={loading || isOverLimit}
+                    disabled={loading || !validation.isValid}
                 >
                     {loading ? (
                         <>
