@@ -1,0 +1,78 @@
+.analytics-container{
+    display:flex;
+    flex-direction:column;
+    gap:30px;
+}
+
+.page-header{
+    background:linear-gradient(135deg,#2563eb,#4f46e5);
+    color:white;
+    padding:30px;
+    border-radius:16px;
+    box-shadow:0 10px 25px rgba(0,0,0,.15);
+}
+
+.page-header h1{
+    margin-bottom:10px;
+}
+
+.analytics-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:20px;
+}
+
+.analytics-card{
+    background:white;
+    border-radius:15px;
+    padding:25px;
+    box-shadow:0 5px 15px rgba(0,0,0,.08);
+    transition:.3s;
+    border-top:5px solid #4f46e5;
+}
+
+.analytics-card:hover{
+    transform:translateY(-6px);
+}
+
+.analytics-card h3{
+    color:#555;
+    margin-bottom:15px;
+}
+
+.analytics-card span{
+    font-size:30px;
+    font-weight:bold;
+    color:#4f46e5;
+}
+
+.analytics-card.success{
+    border-top-color:#22c55e;
+}
+
+.analytics-card.success span{
+    color:#22c55e;
+}
+
+.analytics-card.primary{
+    border-top-color:#2563eb;
+}
+
+.activity-section{
+    background:white;
+    border-radius:15px;
+    padding:25px;
+    box-shadow:0 5px 15px rgba(0,0,0,.08);
+}
+
+.activity-section h2{
+    margin-bottom:20px;
+}
+
+.activity-section ul{
+    padding-left:20px;
+}
+
+.activity-section li{
+    margin-bottom:12px;
+}
