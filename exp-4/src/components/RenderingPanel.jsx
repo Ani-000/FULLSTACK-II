@@ -1,7 +1,4 @@
-import {
-    useEffect,
-    useState,
-} from "react";
+import { useEffect, useState } from "react";
 
 import {
     getRenderStats,
@@ -10,128 +7,164 @@ import {
 } from "../utils/renderTracker";
 
 function RenderingPanel() {
-    const [stats, setStats] =
-        useState(getRenderStats());
+    const [stats, setStats] = useState(
+        getRenderStats()
+    );
 
     useEffect(() => {
-        return subscribeToRenderStats(() => {
-            setStats(
-                getRenderStats()
-            );
-        });
+        const unsubscribe =
+            subscribeToRenderStats((newStats) => {
+                setStats(newStats);
+            });
+
+        return unsubscribe;
     }, []);
 
-    const sortedComponents =
-        Object.entries(
-            stats.counts
-        ).sort(
-            (a, b) => b[1] - a[1]
-        );
+    const handleReset = () => {
+        resetRenderStats();
+    };
+
+    const sortedComponents = Object.entries(
+        stats.counts
+    ).sort(
+        ([, countA], [, countB]) =>
+            countB - countA
+    );
 
     return (
         <aside className="rendering-panel">
 
-            <div className="rendering-header">
-
+            {/* Header */}
+            <div className="rendering-panel-header">
                 <div>
+                    <p className="section-eyebrow">
+                        Performance
+                    </p>
 
                     <h2>
                         Rendering Monitor
                     </h2>
-
-                    <p>
-                        Live component render activity.
-                    </p>
-
                 </div>
 
                 <button
                     type="button"
-                    className="rendering-reset"
-                    onClick={resetRenderStats}
+                    className="render-reset-btn"
+                    onClick={handleReset}
                 >
                     Reset
                 </button>
-
             </div>
 
-            <div className="rendering-stats">
+            {/* Total renders */}
+            <div className="render-total-card">
+                <span className="render-total-label">
+                    Total Renders
+                </span>
 
-                <div className="render-stat">
+                <strong
+                    className={`render-total-number ${
+                        stats.isResetting
+                            ? "is-reset"
+                            : ""
+                    }`}
+                >
+                    {stats.isResetting
+                        ? 0
+                        : stats.total}
+                </strong>
 
-                    <span className="render-stat-label">
-                        Total Renders
+                <span className="render-total-description">
+                    Renders recorded in the current
+                    measurement session
+                </span>
+            </div>
+
+            {/* Component renders */}
+            <div className="render-section">
+
+                <div className="render-section-header">
+                    <span>
+                        Component Renders
                     </span>
 
-                    <strong className="render-stat-value">
-                        {stats.total}
-                    </strong>
-
-                </div>
-
-                <div className="render-stat">
-
-                    <span className="render-stat-label">
-                        Components
-                    </span>
-
-                    <strong className="render-stat-value">
+                    <span className="render-count-badge">
                         {sortedComponents.length}
-                    </strong>
-
+                    </span>
                 </div>
-
-            </div>
-
-            <div className="rendering-list">
 
                 {sortedComponents.length === 0 ? (
+                    <div className="render-empty-state">
 
-                    <div className="render-empty">
-                        Interact with the calendar
-                        to record renders.
+                        <div className="render-empty-icon">
+                            —
+                        </div>
+
+                        <p>
+                            No renders recorded.
+                        </p>
+
+                        <span>
+                            Render activity will
+                            appear here.
+                        </span>
+
                     </div>
-
                 ) : (
+                    <div className="render-component-list">
 
-                    sortedComponents.map(
-                        ([component, count]) => (
+                        {sortedComponents.map(
+                            ([component, count]) => (
+                                <div
+                                    className="render-component-row"
+                                    key={component}
+                                >
+                                    <div className="render-component-info">
 
-                            <div
-                                className="rendering-item"
-                                key={component}
-                            >
+                                        <span className="render-component-dot" />
 
-                                <span>
-                                    {component}
-                                </span>
+                                        <span>
+                                            {component}
+                                        </span>
 
-                                <strong className="rendering-count">
-                                    {count}
-                                </strong>
+                                    </div>
 
-                            </div>
+                                    <strong>
+                                        {count}
+                                    </strong>
+                                </div>
+                            )
+                        )}
 
-                        )
-                    )
-
+                    </div>
                 )}
 
             </div>
 
-            <div className="last-render">
+            {/* Last render */}
+            <div className="last-render-card">
 
-                <span className="last-render-label">
+                <div className="last-render-header">
                     Last Render
-                </span>
+                </div>
 
-                <strong className="last-render-value">
+                {stats.isResetting ||
+                !stats.lastRender ? (
+                    <div className="last-render-empty">
+                        No render recorded
+                    </div>
+                ) : (
+                    <div className="last-render-details">
 
-                    {stats.lastRender
-                        ? `${stats.lastRender.component} — ${stats.lastRender.time}`
-                        : "—"}
+                        <strong>
+                            {stats.lastRender.component}
+                        </strong>
 
-                </strong>
+                        <span>
+                            {stats.lastRender.time}
+                        </span>
+
+                    </div>
+                )}
 
             </div>
 

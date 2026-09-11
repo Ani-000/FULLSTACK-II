@@ -1,59 +1,61 @@
 import React from "react";
+import { trackRender } from "../utils/renderTracker";
 
-import {
-    trackRender,
-} from "../utils/renderTracker";
+function getPostClass(platform) {
+    switch (platform?.toLowerCase()) {
+        case "linkedin":
+            return "post-linkedin";
 
-function CalendarEvent({
-    post,
-    onClick,
-    onDragStart,
-}) {
-    trackRender(
-        `Post ${post.id}`
-    );
+        case "twitter":
+            return "post-twitter";
 
-    const platform =
-        String(post.platform || "default")
-            .toLowerCase()
-            .replace(/\s+/g, "-");
+        case "instagram":
+            return "post-instagram";
+
+        case "facebook":
+            return "post-facebook";
+
+        default:
+            return "post-default";
+    }
+}
+
+function CalendarEvent({ post, onClick }) {
+    trackRender(`Post ${post.id}`);
+
+    const postClass = getPostClass(post.platform);
+
+    const handleDragStart = (event) => {
+        event.dataTransfer.setData("postId", post.id);
+        event.dataTransfer.effectAllowed = "move";
+    };
 
     return (
         <button
             type="button"
+            className={`calendar-event ${postClass}`}
             draggable
-            className={`calendar-event platform-${platform}`}
-            onClick={(event) => {
-                event.stopPropagation();
-                onClick(post);
-            }}
-            onDragStart={(event) => {
-                event.dataTransfer.effectAllowed = "move";
-                event.dataTransfer.setData(
-                    "postId",
-                    post.id
-                );
-
-                onDragStart?.(post);
-            }}
-            title={`${post.title} — ${post.platform}`}
+            onDragStart={handleDragStart}
+            onClick={() => onClick(post)}
+            title={`${post.time} • ${post.title} • ${post.platform}`}
         >
-            <span className="event-time">
+            <span className="calendar-event-time">
                 {post.time}
             </span>
 
-            <span className="event-title">
+            <span className="calendar-event-title">
                 {post.title}
             </span>
 
-            <span className="event-platform">
+            <span className="calendar-event-platform">
                 {post.platform}
             </span>
         </button>
     );
 }
 
-export const MemoizedCalendarEvent =
-    React.memo(CalendarEvent);
+export const MemoizedCalendarEvent = React.memo(
+    CalendarEvent
+);
 
 export default CalendarEvent;
